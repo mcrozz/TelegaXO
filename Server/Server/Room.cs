@@ -17,7 +17,7 @@ namespace Server
 
         public void UpdateState(Int32 ID, Int8 X, Int8 Y)
         {
-            if (ID == player1.id && Players_Turn == 1 && X < 3 && Y < 3 && X >= 0 && Y >= 0 && Game_Board[X, Y] == Fill.empty)
+            if (ID == player1.id && Players_Turn == 1 && Game_Board[X, Y] == Fill.empty)
             {
                 Game_Board[X, Y] = Fill.tic;
                 Players_Turn *= -1;
@@ -25,7 +25,7 @@ namespace Server
                 break;
             }
 
-            if (ID == player2.id && Players_Turn == -1 && X < 3 && Y < 3 && X >= 0 && Y >= 0 && Game_Board[X, Y] == Fill.empty)
+            if (ID == player2.id && Players_Turn == -1 && Game_Board[X, Y] == Fill.empty)
             {
                 Game_Board[X, Y] = Fill.tac;
                 Players_Turn *= -1;
