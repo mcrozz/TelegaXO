@@ -10,9 +10,6 @@ namespace Server
             this->player1 = player1;
             this->player2 = player2;
             Players_Turn = 1;
-            count1 = 0;
-            count2 = 0;
-
             Game_Board = new Fill { {Fill.empty, Fill.empty, Fill.empty },
                                     {Fill.empty, Fill.empty, Fill.empty },
                                     {Fill.empty, Fill.empty, Fill.empty } };
@@ -38,20 +35,10 @@ namespace Server
 
             if (ID == player1.id && Players_Turn == -1)
             {
-                count1++;
+                 player1.SendMessage("Now is not your turn!");
             }
 
             if (ID == player2.id && Players_Turn == 1)
-            {
-                count2++;
-            }
-
-            if ((count1 %10) == 0)
-            {
-                player1.SendMessage("Now is not your turn!");
-            }
-
-            if ((count2 % 10) == 0)
             {
                 player2.SendMessage("Now is not your turn!");
             }
@@ -59,8 +46,6 @@ namespace Server
 
         private Player player1;
         private Player player2;
-        private int count1;
-        private int count2;
         private Fill[,] Game_Board;
         private byte Players_Turn;
         public byte check_EndOfGame (Fill[,] Game_Board)
