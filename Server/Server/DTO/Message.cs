@@ -2,24 +2,24 @@
 
 namespace Server.DTO
 {
-    class MessageDTO
+    class Message
     {
-        MessageDTO() { }
+        public Message() { }
 
-        public String User
+        public Telegram.User User
         {
             get { return user; }
             set { user = value; }
         }
 
-        private String user;
+        private Telegram.User user;
 
-        public String Message
+        public String Text
         {
-            get { return message; }
-            set { message = value; }
+            get { return text; }
+            set { text = value; }
         }
 
-        private String message;
+        private String text;
     }
 }

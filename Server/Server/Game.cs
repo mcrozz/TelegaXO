@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading;
+using System.Collections.Generic;
 
 namespace Server
 {
@@ -8,6 +9,7 @@ namespace Server
         {
             rooms = new List<Room>();
             telegram = new Telegram();
+            Telegram.Start(ref telegram);
         }
 
         public void StartGame()
