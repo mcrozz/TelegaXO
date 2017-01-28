@@ -1,11 +1,12 @@
-﻿
+﻿using System;
+
 namespace Server
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(String[] args)
         {
-            Game game = new Game();
+            Game.Start();
         }
     }
 }
