@@ -51,9 +51,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI.cs" />
+    <Compile Include="DTO\Telegram\AnswerCallbackQuery.cs" />
     <Compile Include="DTO\Telegram\Chat.cs" />
+    <Compile Include="DTO\Telegram\CallbackQuery.cs" />
     <Compile Include="DTO\Telegram\GetUpdates.cs" />
     <Compile Include="DTO\Message.cs" />
+    <Compile Include="DTO\Telegram\InlineKeyboardButton.cs" />
+    <Compile Include="DTO\Telegram\InlineKeyboardMarkup.cs" />
     <Compile Include="DTO\Telegram\Message.cs" />
     <Compile Include="DTO\Telegram\Update.cs" />
     <Compile Include="DTO\Telegram\User.cs" />
