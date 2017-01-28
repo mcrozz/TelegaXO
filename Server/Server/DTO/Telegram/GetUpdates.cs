@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Server.DTO.Telegram
 {
-    class GetUpdates
+    public class GetUpdates
     {
         public Boolean ok;
         public IList<Update> result;

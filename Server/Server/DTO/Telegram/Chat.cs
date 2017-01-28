@@ -2,7 +2,7 @@
 
 namespace Server.DTO.Telegram
 {
-    class Chat
+    public class Chat
     {
         public Int64 id;
         public String type;

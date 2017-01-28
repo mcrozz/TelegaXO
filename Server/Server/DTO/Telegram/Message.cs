@@ -2,7 +2,7 @@
 
 namespace Server.DTO.Telegram
 {
-    class Message
+    public class Message
     {
         public Int32 message_id;
         public User from;
