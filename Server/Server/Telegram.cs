@@ -18,6 +18,10 @@ namespace Server
 
         public static void Send(DTO.Message message)
         {
+            // Throw off dublicates
+            if (_pendingSending.Contains(message))
+                return;
+
             _pendingSending.Add(message);
         }
 
