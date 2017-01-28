@@ -73,11 +73,15 @@ namespace Server
                 }*/
             else if (message.text.Equals("Test"))
             {
-                DTO.Telegram.InlineKeyboardButton[,] buttons = new DTO.Telegram.InlineKeyboardButton[2, 2]
-                {
-                        {new DTO.Telegram.InlineKeyboardButton("Hey", "/hey"), new DTO.Telegram.InlineKeyboardButton("Don't", "/dont") },
-                        {new DTO.Telegram.InlineKeyboardButton("Stop", "/stop"), new DTO.Telegram.InlineKeyboardButton("Test", "/test") }
-                };
+                Int32 size = 8;
+                String[] XY = new String[] {"X", "O", " "};
+                Random random = new Random(new TimeSpan().Milliseconds);
+                Func<String> XorY = new Func<String>(() => XY[random.Next(0, 3)]);
+                DTO.Telegram.InlineKeyboardButton[,] buttons = new DTO.Telegram.InlineKeyboardButton[size, size];
+                for (Int32 i=0; i<size; i++)
+                    for (Int32 j = 0; j < size; j++)
+                        buttons[i, j] = new DTO.Telegram.InlineKeyboardButton(XorY(), $"{i}_{j}");
+
                 DTO.Telegram.InlineKeyboardMarkup keyboard = new DTO.Telegram.InlineKeyboardMarkup()
                 {
                     inline_keyboard = buttons
@@ -95,6 +99,8 @@ namespace Server
 
         public static void ParseQueryUpdate(DTO.Telegram.CallbackQuery query)
         {
+            Console.WriteLine($"Got callbackQuery with data: {query.data}");
+
             // TODO: forward it to the Room[].UpdateState
             DTO.Telegram.AnswerCallbackQuery answerQuery = new DTO.Telegram.AnswerCallbackQuery
             {
