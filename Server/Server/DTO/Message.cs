@@ -6,5 +6,6 @@ namespace Server.DTO
     {
         public Telegram.User User;
         public String Text;
+        public Telegram.InlineKeyboardMarkup KeyboardMarkup;
     }
 }
