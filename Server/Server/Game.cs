@@ -1,26 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Server
 {
     public static class Game
     {
-
         public static void Start()
         {
             Telegram.Start(ref _telegram);
+            _gameThread = new Thread(Game.GameLoop);
+            _gameThread.Start();
         }
 
-        public static void StartGame(DTO.Telegram.User player1, DTO.Telegram.User player2 = null)
+        public static void Queue(DTO.Telegram.Message message)
         {
-            Player _player1 = new Player(player1);
-            Player _player2 = new Player(player2);
+            _queueMessages.Add(message);
+        }
+
+        public static void Queue(DTO.Telegram.CallbackQuery message)
+        {
+            _queueCallback.Add(message);
+        }
+
+        private static void GameLoop()
+        {
+            while (true)
+            {
+                while (_queueMessages.Count != 0)
+                {
+                    var message = _queueMessages[0];
+                    _queueMessages.RemoveAt(0);
+                    ParseNormalMessage(message);
+                }
+
+                while (_queueCallback.Count != 0)
+                {
+                    var message = _queueCallback[0];
+                    _queueMessages.RemoveAt(0);
+                    ParseQueryUpdate(message);
+                }
+
+                Thread.Sleep(10);
+            }
+        }
+
+        private static void StartGame(DTO.Telegram.User player1, DTO.Telegram.User player2 = null)
+        {
+            IPlayer _player1 = new Player(player1);
+            IPlayer _player2 = new Player(player2);
             Room room = new Room(_player1, _player2);
             _rooms.Add(room);
         }
 
-        public static void ParseNormalMessage(DTO.Telegram.Message message)
+        private static void ParseNormalMessage(DTO.Telegram.Message message)
         {
             Console.WriteLine($"[{message.@from.username}]: {message.text}");
 
@@ -97,7 +131,7 @@ namespace Server
             // >>
         }
 
-        public static void ParseQueryUpdate(DTO.Telegram.CallbackQuery query)
+        private static void ParseQueryUpdate(DTO.Telegram.CallbackQuery query)
         {
             Console.WriteLine($"Got callbackQuery with data: {query.data}");
 
@@ -131,6 +165,11 @@ namespace Server
 
         private static IList<Room> _rooms = new List<Room>();
         private static Telegram _telegram = new Telegram();
+
+        private static IList<DTO.Telegram.Message> _queueMessages = new List<DTO.Telegram.Message>();
+        private static IList<DTO.Telegram.CallbackQuery> _queueCallback = new List<DTO.Telegram.CallbackQuery>();
+
+        private static Thread _gameThread;
 
         private static readonly Regex extractData = new Regex(@"^(\d)_(\d)$");
 

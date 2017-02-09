@@ -25,7 +25,20 @@ namespace Server
             _pendingSending.Add(message);
         }
 
-        public static void Receiver()
+        public static void Start(ref Telegram instance)
+        {
+            if (_thread != null)
+                return;
+            _thread = new Thread(Telegram.Receiver);
+            _thread.Start();
+        }
+
+        public static void Stop()
+        {
+            _terminate = true;
+        }
+
+        private static void Receiver()
         {
             while (!_terminate)
             {
@@ -46,19 +59,6 @@ namespace Server
                 Thread.Sleep(Interval);
             }
             _thread = null;
-        }
-
-        public static void Start(ref Telegram instance)
-        {
-            if (_thread != null)
-                return;
-            _thread = new Thread(Telegram.Receiver);
-            _thread.Start();
-        }
-
-        public static void Stop()
-        {
-            _terminate = true;
         }
 
         private static void GetResponse(String uri, String method)
@@ -143,9 +143,9 @@ namespace Server
                     _offset = message.update_id + 1;
 
                 if (message.callback_query != null)
-                    Game.ParseQueryUpdate(message.callback_query);
+                    Game.Queue(message.callback_query);
                 else if (message.message != null)
-                    Game.ParseNormalMessage(message.message);
+                    Game.Queue(message.message);
             }
         }
 
