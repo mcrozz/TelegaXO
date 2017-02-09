@@ -91,7 +91,7 @@ namespace Server
             {
                 if (room.isPlayerPresent(query.@from.id))
                 {
-                    Match point = extractData.Match(query.data);
+                    Match point = ExtractData.Match(query.data);
                     if (!point.Success)
                         throw new Exception(ExcDataNotExctracted);
                     room.UpdateState(query.@from.id, (Int16)point.Groups[0], (Int16)point.Groups[1]);
@@ -121,7 +121,7 @@ namespace Server
         private static Thread _gameThread;
         private static Boolean _terminate = false;
 
-        private static readonly Regex extractData = new Regex(@"^(\d)_(\d)$");
+        private static readonly Regex ExtractData = new Regex(@"^(\d)_(\d)$");
 
         private const String ExcRoomNotFound = "Maybe you wanted to begin game?";
         private const String ExcDataNotExctracted = "Could not extract data from callbackQuery";
