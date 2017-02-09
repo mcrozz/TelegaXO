@@ -4,10 +4,6 @@ namespace Server
 {
     class Player : IPlayer
     {
-        public Player()
-        {
-            this.id = -1;
-        }
         public Player(DTO.Telegram.User player)
         {
             this.id = player.id;
