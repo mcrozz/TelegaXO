@@ -4,11 +4,16 @@ namespace Server
 {
     class Player : IPlayer
     {
+        public Player()
+        {
+            this.id = -1;
+        }
         public Player(DTO.Telegram.User player)
         {
             this.id = player.id;
+            this.user = player;
         }
-        public System.Int32 ID
+        public Int32 ID
         {
             get { return id; }
         }
@@ -42,10 +47,7 @@ namespace Server
             };
             DTO.Message reply = new DTO.Message
             {
-                User = new DTO.Telegram.User
-                {
-                    id = this.ID
-                },
+                User = this.user,
                 KeyboardMarkup = keyboard
             };
             Telegram.Send(reply);
@@ -54,10 +56,7 @@ namespace Server
         {
             DTO.Message reply = new DTO.Message
             {
-                User = new DTO.Telegram.User
-                {
-                    id = this.ID
-                },
+                User = this.user,
                 Text = text
             };
             Telegram.Send(reply);
@@ -65,5 +64,6 @@ namespace Server
 
 
         private readonly Int32 id;
+        private readonly DTO.Telegram.User user;
     }
 }
