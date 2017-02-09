@@ -27,8 +27,9 @@ namespace Server
 
         public static void Start(ref Telegram instance)
         {
-            if (_thread != null)
+            if (_thread != null && _terminate)
                 return;
+            _terminate = false;
             _thread = new Thread(Telegram.Receiver);
             _thread.Start();
         }

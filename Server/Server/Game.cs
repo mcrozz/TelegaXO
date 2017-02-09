@@ -10,8 +10,17 @@ namespace Server
         public static void Start()
         {
             Telegram.Start(ref _telegram);
+
+            if (_gameThread != null && _terminate)
+                return;
+            _terminate = false;
             _gameThread = new Thread(Game.GameLoop);
             _gameThread.Start();
+        }
+
+        public static void Stop()
+        {
+            _terminate = true;
         }
 
         public static void Queue(DTO.Telegram.Message message)
@@ -26,18 +35,18 @@ namespace Server
 
         private static void GameLoop()
         {
-            while (true)
+            while (!_terminate)
             {
                 while (_queueMessages.Count != 0)
                 {
-                    var message = _queueMessages[0];
+                    DTO.Telegram.Message message = _queueMessages[0];
                     _queueMessages.RemoveAt(0);
                     ParseNormalMessage(message);
                 }
 
                 while (_queueCallback.Count != 0)
                 {
-                    var message = _queueCallback[0];
+                    DTO.Telegram.CallbackQuery message = _queueCallback[0];
                     _queueMessages.RemoveAt(0);
                     ParseQueryUpdate(message);
                 }
@@ -107,11 +116,10 @@ namespace Server
 
         private static IList<Room> _rooms = new List<Room>();
         private static Telegram _telegram = new Telegram();
-
         private static IList<DTO.Telegram.Message> _queueMessages = new List<DTO.Telegram.Message>();
         private static IList<DTO.Telegram.CallbackQuery> _queueCallback = new List<DTO.Telegram.CallbackQuery>();
-
         private static Thread _gameThread;
+        private static Boolean _terminate = false;
 
         private static readonly Regex extractData = new Regex(@"^(\d)_(\d)$");
 
