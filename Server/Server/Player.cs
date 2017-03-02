@@ -4,15 +4,24 @@ namespace Server
 {
     class Player : IPlayer
     {
+        [Obsolete("Igor' ne delay etogo!")]
         public Player(DTO.Telegram.User player)
         {
-            this.id = player.id;
             this.user = player;
         }
+
+
+        public Player(DTO.Telegram.User player, Room.Fill Marker)
+        {
+            this.user = player;
+            this.marker = Marker;
+        }
+
         public Int32 ID
         {
-            get { return id; }
+            get { return this.user.id; }
         }
+
         public void SendMessage(Room.Fill[,] cell)
         {
             Int32 size = cell.GetLength(0);
@@ -37,10 +46,12 @@ namespace Server
                     }
                 }
             }
+
             DTO.Telegram.InlineKeyboardMarkup keyboard = new DTO.Telegram.InlineKeyboardMarkup
             {
                 inline_keyboard = buttons
             };
+
             DTO.Message reply = new DTO.Message
             {
                 User = this.user,
@@ -48,6 +59,7 @@ namespace Server
             };
             Telegram.Send(reply);
         }
+
         public void SendMessage(string text)
         {
             DTO.Message reply = new DTO.Message
@@ -59,7 +71,7 @@ namespace Server
         }
 
 
-        private readonly Int32 id;
         private readonly DTO.Telegram.User user;
+        private readonly Room.Fill marker;
     }
 }
